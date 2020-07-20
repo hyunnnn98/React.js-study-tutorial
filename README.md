@@ -128,7 +128,10 @@
 
 ### Props 사용법
 
-- 부무 ⇒ 자식으로 넘겨주는 값을 **props** 라고 부른다.
+- 부모 ⇒ 자식으로 넘겨주는 값을 **props** 라고 부른다. ( **읽기 전용 값** )
+
+    ![React%20js%207c730744087e4b63b51a086cba038ccd/Untitled.png](React%20js%207c730744087e4b63b51a086cba038ccd/Untitled.png)
+
 - 하위 컴포넌트 예제
 
     ```jsx
@@ -197,6 +200,233 @@
 
 ### State 사용법
 
+- props와 다르게, **컴포넌트 자신이 처음부터 들고있는 값**이다.
+
+    → state는 내부에서 변경 할 수 있다.
+
+    → 변경 할 때는 언제나 setState 라는 함수를 이용한다.
+
+    ![React%20js%207c730744087e4b63b51a086cba038ccd/Untitled%201.png](React%20js%207c730744087e4b63b51a086cba038ccd/Untitled%201.png)
+
+- state 예제
+
+    ```jsx
+    import React, { Component } from "react";
+
+    class Counter extends Component {
+      /*
+        반드시 state는 객체여야 한다.
+      */
+      state = {
+        number: 0
+      };
+
+      /*
+        [ 에로우 펑션을 사용하지 않을 경우 ]
+        constructor => 컴포넌트가 만들어질때마다 만들어지는 함수
+        this의 객체안에 커스텀한 메서드를 선언하여 등록.
+      */
+      constructor(props) {
+        super(props);
+        this.handelIncrease = this.handelIncrease.bind(this);
+        this.handelDecrease = this.handelDecrease.bind(this);
+      }
+
+      /*
+        [ 에로우 펑션을 사용 할 경우 ] => 추천하는 방법
+        state값을 변화시키기 위한 Custom Method 생성.
+        업데이트를 하기 위해서는 반드시 this.setState() 함수를 이용해야 한다.
+        this.setState를 참조하기 위해 function을 () => {} 에로우 함수로 선언 하였다.
+      */
+      handelIncrease = () => {
+        this.setState({
+          number: this.state.number + 1
+        });
+      };
+
+      handelDecrease() {
+        this.setState({
+          number: this.state.number - 1
+        });
+      }
+
+      render() {
+        return (
+          <div>
+            <h1>카운터</h1>
+            <div>값: {this.state.number}</div>
+            <button onClick={this.handelIncrease}>+</button>
+            <button onClick={this.handelDecrease}>-</button>
+          </div>
+        );
+      }
+    }
+
+    export default Counter;
+    ```
+
 ---
 
 ### LifeCycle API 사용법
+
+- 라이프 사이클 종류
+
+    ![React%20js%207c730744087e4b63b51a086cba038ccd/Untitled%202.png](React%20js%207c730744087e4b63b51a086cba038ccd/Untitled%202.png)
+
+    [*자세히 보기](http://react-anyone.vlpt.us/05.html)
+
+- 컴포넌트 초기 생성
+    - **componentDidMount**
+
+        ⇒ 컴포넌트가 화면에 나타나게 됐을 때 호출된다.
+
+        ```jsx
+        componentDidMount() {
+        	/*
+        			외부 라이브러리 연동 : D3, masonry, etc
+        			컴포넌트에서 필요한 데이터 요청 : Ajax, GraphQL, etc
+        			DOM 에 관련된 작업 : 스크롤 설정, 크기 읽어오기 등
+        	*/
+        }
+        ```
+
+- 컴포넌트 업데이트
+    - **static getDerivedStateFromProps**
+
+        ```jsx
+        	/*
+            getDerivedStateFromProps 는 static값으로 넣어야 한다.
+        		여기서는 setState 를 하는 것이 아니라
+        		특정 props 가 바뀔 때 설정하고 싶은 state 값을 리턴하는 형태로 사용된다.		
+
+            nextProps : 다음으로 가져올 Props값을 가져오는 역할.
+            prevState : 현재 업데이트 되기 전의 상태를 가져오는 역할.
+          */
+          static getDerivedStateFromProps(nextProps, prevState) {
+            if (prevState.value !== nextProps.value) {
+              return {
+                value: nextProps.value
+              };
+            }
+            return null;   // null 을 리턴하면 따로 업데이트 할 것은 없다는 의미가 된다.
+          }
+        ```
+
+    - **shouldComponentUpdate**
+
+        ```jsx
+        	/*
+            shouldComponentUpdate ( defalutValue : true )
+            특정 조건에 따라 랜더링(업데이트)를 막아주는 함수 ( 최적화를 위해 )
+
+        		false 인 경우 랜더링이 Virtual DOM 에 리렌더링 X. PASS의 개념.
+          */
+          shouldComponentUpdate(nextProps, nextState) {
+            if (nextProps.value === 10) return false;
+            return true;
+          }
+        ```
+
+    - **getSnapshotBeforeUpdate**
+
+        이 API 가 발생하는 시점은 다음과 같다.
+
+        1. render()
+        2. **getSnapshotBeforeUpdate()**
+        3. 실제 DOM 에 변화 발생
+        4. componentDidUpdate
+
+        [ getSnapshotBeforeUpdate ] 를 통해서, DOM 변화가 일어나기 직전의 DOM 상태를 가져오고,
+
+        여기서 리턴하는 값은 componentDidUpdate 에서 3번째 파라메터로 받아올 수 있다.
+
+        ```jsx
+        getSnapshotBeforeUpdate(prevProps, prevState) {
+            /* 
+               DOM 업데이트가 일어나기 직전의 시점입니다.
+               새 데이터가 상단에 추가되어도 스크롤바를 유지해보겠습니다.
+               scrollHeight 는 전 후를 비교해서 스크롤 위치를 설정하기 위함이고,
+               scrollTop 은, 이 기능이 크롬에 이미 구현이 되어있는데, 
+               이미 구현이 되어있다면 처리하지 않도록 하기 위함입니다.
+        		*/
+            if (prevState.array !== this.state.array) {
+              const {
+                scrollTop, scrollHeight
+              } = this.list;
+
+              /*
+        				 여기서 반환 하는 값은 componentDidMount 에서
+        				 snapshot 값으로 받아올 수 있습니다.
+        			*/
+              return {
+                scrollTop, scrollHeight
+              };
+            }
+          }
+
+          componentDidUpdate(prevProps, prevState, **snapshot**) {
+            if (snapshot) {
+              const { scrollTop } = this.list;
+        			// 기능이 이미 구현되어있다면 처리하지 않습니다.
+              if (scrollTop !== snapshot.scrollTop) return;
+              const diff = this.list.scrollHeight - snapshot.scrollHeight;
+              this.list.scrollTop += diff;
+            }
+          }
+        ```
+
+    - **componentDidUpdate**
+
+        컴포넌트에서 render() 를 호출하고난 다음에 발생하게 된다.
+
+        이 시점에는 this.props 와 this.state 가 바뀌어 있다.
+
+        그리고, 파라메터를 통해 이전 값인 preProps 와 preState 를 조회할 수 있다.
+
+        +&) getSnapshotBeforeUpdate 에서 반환한 snapshot 값은 세번째 값으로 받아온다.
+
+        ```jsx
+        	// DOM 업데이트 이후 시점.
+          componentDidUpdate(prevProps, prevState, snapshot) {
+            if (this.props.value !== prevProps.value) {
+              console.log("value 값이 바뀌었다!", this.props.value);
+            }
+          }
+        ```
+
+- 컴포넌트 제거
+    - **componentWillUnmount**
+
+        여기서는 주로 등록했었던 이벤트를 제거하고,
+
+        if) setTimeout 을 걸은 것이 있다면, clearTimeout 을 통하여 제거하자.
+
+        +&) 외부 라이브러리를 사용한게 있고 해당 라이브러리에 dispose(=처분) 기능이 있다면 여기서 호출하면 된다.
+
+        ```jsx
+        	// DOM에서 컴포넌트가 제거 될 시점.
+          componentWillUnmount() {
+            console.log("Good Bye");
+          }
+        ```
+
+- 컴포넌트에 에러 발생
+    - **componentDidCatch**
+
+        +&) componentDidCatch 를 선언한 컴포넌트 자신의 에러는 캐치하지 못한다.
+
+        ```jsx
+        	/*
+           에러를 잡으려면 해당 자식이 아닌 
+           부모에서 에러를 잡아야 한다.
+           ( 실수로 잡지 못한 버그들을 캐치 작업 )
+          */
+          componentDidCatch(error, info) {
+            console.log(error);
+            console.log(info);
+            this.setState({
+              error: true
+            });
+            // API 를 통하여 서버로 오류 내용 날리기
+          }
+        ```
