@@ -430,3 +430,23 @@
             // API 를 통하여 서버로 오류 내용 날리기
           }
         ```
+
+---
+
+### 로컬에서 리엑트 작업방법
+
+⇒ facebook에서 제공해주는 기본 React.js 폴더 구성 인스톨
+
+[npx create-react-app **프로젝트명**](https://github.com/facebook/create-react-app)
+
+( IF - vscode 사용자 )  plugin으로 Reactjs code snippets설치
+
+→ 단축키 rcc ( 클래스형 기반 ), rsc ( 함수형 기반 ) 컴포넌트 구성 파일 자동 생성.
+
+---
+
+**handelCreate**
+
+- 자식 ⇒ 부모 데이터 전송
+
+    ![React%20js%207c730744087e4b63b51a086cba038ccd/Untitled%203.png](React%20js%207c730744087e4b63b51a086cba038ccd/Untitled%203.png)
