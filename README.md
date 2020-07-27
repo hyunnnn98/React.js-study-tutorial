@@ -5,6 +5,7 @@
 - **Babel**란? ES6 이상의 구문 ⇒ ES5 구문으로 변환시켜주는 자바스크립트 변환 도구.
 - **JSX**란?
 
+    **⇒ JS + XML**
     리엑트에서 사용하는 HTML과 비슷하지만, 지켜야 할 규칙이 몇가지 있다.
 
     1. 꼭 닫혀야 하는 태그.
@@ -178,7 +179,7 @@
     export default App;
     ```
 
-- props로 간단한 값만 넘기는 경우 **함수형 컴포넌트**를 사용한다.
+- props로 간단한 값만 넘기는 경우 **함수형 컴포넌트**를 사용한다. ⇒ React Hooks
     - 함수형 컴포넌트는 초기 로딩속도가 빠르다.
     - 불필요한 메모리 자원을 낭비하지 않는다.
 
@@ -194,6 +195,23 @@
     };
 
     export default MyName;
+    ```
+
+    - 함수형 컴포넌트 안에서 State값 관리하는 방법. → useState로 시작하는게 Hooks !!
+
+    ```jsx
+    const GuguDan = () => {
+    	const [first, setFrist] = React.useState(Math.ceil(Math.random() * 9));
+    	const [second, setSecond] = React.useState(Math.ceil(Math.random() * 9));
+    	const [value, setValue] = React.useState('');
+    	const [result, setResult] = React.useState('');
+
+    	const onChangeInput = (e) => {
+    		setValue(e.target.value);
+    	}
+
+    	return <div>Hello, Hooks</div>
+    }
     ```
 
 ---
@@ -263,6 +281,46 @@
     }
 
     export default Counter;
+    ```
+
+- setState 적용간에 State의 **현재 VS 과거 값 구분**하기
+    - setState 의 params 로 prevState (과거시점 state)의 값을 가져올 수 있다.
+
+    ```jsx
+    // this.setState의 함수형으로 정의. 보통은 객체로 정의했음!!
+    this.setState((prevState) => {
+    	return {
+    		result : '정답' + prevState.value,
+    		first: ~~,
+    		second: ~~,
+    	}
+    }
+    ```
+
+- ref 사용법
+
+    element dom tag안에 
+
+    ```jsx
+    <input
+    	value = {this.state.name}
+    	ref = {this.input}
+    	// ref = { (c) => { this.input = c; }}
+    />
+    // 라고 선언했으면 
+
+    해당 class의 최상단에
+    // [IF] React.createRef 를 사용할 경우
+        input = React.createRef();
+    // [ELSE]
+        input = null;
+
+    // 로 선언한 다음 => 각 핸들러 함수에서
+    // [IF] React.createRef 를 사용할 경우
+            this.input.current.focus();
+    // [ELSE]
+            // this.input.focus();
+    // 를 선언하여 관리한다.
     ```
 
 ---
