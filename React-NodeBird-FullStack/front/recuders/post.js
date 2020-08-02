@@ -31,6 +31,11 @@ const reducer = (state = initialState, { type, payload }) => {
         case ADD_DUMMY: {
             return { ...state, }
         }
+        default: {
+            return {
+                ...state,
+            }
+        }
     }
 };
 

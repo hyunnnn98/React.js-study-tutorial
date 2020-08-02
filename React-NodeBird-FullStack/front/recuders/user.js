@@ -55,7 +55,11 @@ const reducer = (state = initialState, action) => {
                 user: null,
             }
         }
-        default :
+        default: {
+            return {
+                ...state,
+            }
+        }
     }
 };
 
