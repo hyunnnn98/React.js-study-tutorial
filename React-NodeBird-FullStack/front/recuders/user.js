@@ -12,8 +12,8 @@ export const initialState = {
     Action
     액션들의 이름
 */
-const LOG_IN = 'LOG_IN';
-const LOG_OUT = 'LOG_OUT';
+export const LOG_IN = 'LOG_IN';
+export const LOG_OUT = 'LOG_OUT';
 
 /*
     Action

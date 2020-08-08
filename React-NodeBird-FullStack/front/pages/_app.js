@@ -15,10 +15,10 @@ import AppLayout from '../components/AppLayout';
  *  next.js 에서 redux 를 적용하려면 추가적으로
  *  next-redux-wrapper 라이브러리가 필요.
  */
-import { Provider } from 'react-redux';  
+import { Provider } from 'react-redux';
 import reducer from '../recuders';
 import withRedux from 'next-redux-wrapper';
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';  /* Redux 미들웨어 추가  */
 
 const NodeBird = ({ Component, store }) => {
     return (
@@ -43,6 +43,17 @@ NodeBird.propTypes = {
 
 // NodeBird 로 감싸준다. => 하이오더 컴포넌트 ( 고차 컴포넌트 ) => 기존 컴포넌트 기능 확장.
 export default withRedux((initialState, options) => {
-    const store = createStore(reducer, initialState);
+    const middlewares = [];
+    /**
+     * compose : 미들웨어들을 합성
+     * applyMiddleware : middleware array에 있는 적용할 미들웨어들을 적용.
+     */
+    const enhancer = process.env.NODE_ENV === 'production'
+        ? compose(applyMiddleware(...middlewares))
+        : compose(
+            applyMiddleware(...middlewares),
+            !options.isServer && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+        );
+    const store = createStore(reducer, initialState, enhancer);
     return store;
 })(NodeBird);
