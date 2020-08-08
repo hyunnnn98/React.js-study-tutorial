@@ -33,8 +33,8 @@ const Signup = () => {
     const [term, setTerm] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [termError, setTermError] = useState(false);
-    const onSubmit = useCallback(() => {
-        // e.preventDefault();hh
+    const onSubmit = useCallback((e) => {
+        e.preventDefault();
         if (password !== passwordCheck) {
             return setPasswordError(true);
         }
@@ -56,7 +56,7 @@ const Signup = () => {
 
     return (
         <>
-            <Form onFinish={onSubmit} style={{ padding: 10 }}>
+            <Form onSubmit={onSubmit} style={{ padding: 10 }}>
                 <TextInput value="123123" />
                 <div>
                     <label htmlFor="user-id">아이디</label><br />

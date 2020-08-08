@@ -4,18 +4,13 @@ import PropTypes from 'prop-types'
 import { Menu, Input, Row, Col } from 'antd'
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import { useSelector } from 'react-redux';
 
-const dummy = {
-    nickname: '조승현',
-    Post: [],
-    Followings: [],
-    Followers: [],
-    isLoggedIn: true,
-}
 /*
     children == Props 같은 의미로 쓰인다!
 */
 const AppLayout = ({ children }) => {
+    const { isLoggedIn } = useSelector(state => state.user);
     return (
         <div>
             <Menu mode="horizontal">
@@ -28,7 +23,7 @@ const AppLayout = ({ children }) => {
             <Row gutter={8}>
                 {/* // xs : 모바일, sm : 작은화면, md : 중간화면, lg : 큰화면 ( 가로 너비 기준 ) */}
                 <Col xs={24} md={6}>
-                    {dummy.isLoggedIn
+                    {isLoggedIn
                         ? <UserProfile />
                         : <LoginForm />}
                 </Col>

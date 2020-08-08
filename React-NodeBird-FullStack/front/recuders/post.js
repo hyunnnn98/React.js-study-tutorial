@@ -1,5 +1,13 @@
 export const initialState = {
-    mainPosts: [],
+    mainPosts: [{
+        User: {
+            id: 1,
+            nickname: '조승현',
+        },
+        content: '첫 번째 게시글',
+        img: 'https://web-source-animalcro-project.s3.ap-northeast-2.amazonaws.com/source/loading.png',
+    }],
+    imagePaths: [],
 };
 
 const ADD_POST = 'ADD_POST';
