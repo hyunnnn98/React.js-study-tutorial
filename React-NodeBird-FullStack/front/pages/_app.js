@@ -16,6 +16,8 @@ import AppLayout from '../components/AppLayout';
  *  next-redux-wrapper 라이브러리가 필요.
  */
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from '../sagas';
 import reducer from '../recuders';
 import withRedux from 'next-redux-wrapper';
 import { createStore, compose, applyMiddleware } from 'redux';  /* Redux 미들웨어 추가  */
@@ -43,7 +45,8 @@ NodeBird.propTypes = {
 
 // NodeBird 로 감싸준다. => 하이오더 컴포넌트 ( 고차 컴포넌트 ) => 기존 컴포넌트 기능 확장.
 export default withRedux((initialState, options) => {
-    const middlewares = [];
+    const sagaMiddleware = createSagaMiddleware();
+    const middlewares = [sagaMiddleware];
     /**
      * compose : 미들웨어들을 합성
      * applyMiddleware : middleware array에 있는 적용할 미들웨어들을 적용.
@@ -55,5 +58,7 @@ export default withRedux((initialState, options) => {
             !options.isServer && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
         );
     const store = createStore(reducer, initialState, enhancer);
+    // 미들웨어 실행
+    sagaMiddleware.run(rootSaga);
     return store;
 })(NodeBird);

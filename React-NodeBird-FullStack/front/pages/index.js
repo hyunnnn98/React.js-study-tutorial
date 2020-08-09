@@ -4,7 +4,7 @@ import PostCard from '../components/PostCard';
 
 // react-redux Hooks 사용..
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAction, logoutAction } from '../recuders/user'
+// import { loginAction, logoutAction } from '../recuders/user'
 
 const Home = () => {
     // dispatch 를 하면 dispatch 함수 안에 넣은 action 객체가 reducer 로 전달되는 형식이다.
@@ -21,9 +21,15 @@ const Home = () => {
 
     // DependencyList 디펜던시 배열에 아무것도 안넣으면 componentDidMount 랑 동일하다.
     useEffect(() => {
-        dispatch(loginAction);
-        dispatch(logoutAction);
-        // dispatch(loginAction);
+        dispatch({
+            type: 'HELLO_SAGA',
+        })
+        dispatch({
+            type: 'HELLO_SAGA',
+        })
+        dispatch({
+            type: 'HELLO_SAGA',
+        })
     }, []);
 
     return (
