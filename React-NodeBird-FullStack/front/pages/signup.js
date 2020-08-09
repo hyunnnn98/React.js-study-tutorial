@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { Form, Input, Checkbox, Button } from 'antd';
 import PropTypes from 'prop-types';
+import { useDispatch} from 'react-redux'
+import { signUpAction } from '../recuders/user';
 
 const TextInput = () => {
     return <div>aa</div>
@@ -26,6 +28,8 @@ export const useInput = (initValue = null) => {
 };
 
 const Signup = () => {
+    const dispatch = useDispatch();
+
     const [id, onChangeId] = useInput('');
     const [nick, onChangeNick] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -41,6 +45,12 @@ const Signup = () => {
         if (!term) {
             return setTermError(true);
         }
+        // redux-hook
+        dispatch(signUpAction({
+            id,
+            password,
+            nick,
+        }));
     }, [password, passwordCheck, term]);
 
     const onChangePasswordCheck = useCallback((e) => {
