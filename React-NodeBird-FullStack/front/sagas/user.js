@@ -13,15 +13,18 @@ function signUpAPI() {
 
 function* signUp() {
   try {
-    yield call(signUpAPI);
-    yield put({ /* put 은 dispatch 와 동일하다. */
-      type: SIGN_UP_SUCCESS,
-    });
+    // yield call(signUpAPI);
+    yield delay(2000);
+    throw new Error('에러에러에러에러');
+    // yield put({ /* put 은 dispatch 와 동일하다. */
+    //   type: SIGN_UP_SUCCESS,
+    // });
     // loginAPI 실패
   } catch (e) {
     console.log(e);
     yield put({
       type: SIGN_UP_FAILURE,
+      error: e,
     });
   }
 }
