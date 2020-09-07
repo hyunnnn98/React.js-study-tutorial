@@ -1,21 +1,20 @@
 const dummyUser = {
-    Post: [1, 2, 3, 4, 5, 6, 7],
-    Followings: [1, 2, 3, 4, 5],
-    Followers: [1, 2, 3, 4, 5],
-    nickname: '조승현',
-    signUpData: {},
+  Post: [1, 2, 3, 4, 5, 6, 7],
+  Followings: [1, 2, 3, 4, 5],
+  Followers: [1, 2, 3, 4, 5],
+  nickname: '조승현',
+  signUpData: {},
 };
 
-/*  
+/*
     Store
     유저 정보 관리
     intialState 에 넣은 값들은 초기값으로 설정된다.
 */
 export const initialState = {
-    isLoggedIn: false,
-    user: null,
+  isLoggedIn: false,
+  user: null,
 };
-
 
 /*
     Action
@@ -40,22 +39,20 @@ export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
     실제 액션 ( 액션의 이름 + 넣어줄 데이터 )
 */
 export const loginAction = {
-    type: LOG_IN_REQUEST,
+  type: LOG_IN_REQUEST,
 };
 
 export const logoutAction = {
-    type: LOG_OUT_REQUEST,
+  type: LOG_OUT_REQUEST,
 };
 
-export const signUpAction = (data) => {
-    return {
-        type: SIGN_UP_REQUEST,
-        data: data,
-    }
-}
+export const signUpAction = (data) => ({
+  type: SIGN_UP_REQUEST,
+  data,
+});
 
 export const signUpSuccess = {
-    type: SIGN_UP_SUCCESS,
+  type: SIGN_UP_SUCCESS,
 };
 
 /*
@@ -68,42 +65,42 @@ export const signUpSuccess = {
     새로운 데이터를 생성해서 return 해 준다. ( 불변성을 위해서!! )
 */
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case LOG_IN_REQUEST: {
-            return {
-                ...state,
-                loginData: action.data,
-                isloading: true,
-            }
-        }
-        case LOG_IN_SUCCESS: {
-            return {
-                ...state,
-                isLoggedIn: true,
-                user: dummyUser,
-                loginData: action.data,
-                isLoading: false,
-            }
-        }
-        case LOG_OUT_REQUEST: {
-            return {
-                ...state,
-                isLoggedIn: false,
-                user: null,
-            }
-        }
-        case SIGN_UP_REQUEST: {
-            return {
-                ...state,
-                signUpData: action.data,
-            }
-        }
-        default: {
-            return {
-                ...state,
-            }
-        }
+  switch (action.type) {
+    case LOG_IN_REQUEST: {
+      return {
+        ...state,
+        loginData: action.data,
+        isloading: true,
+      };
     }
+    case LOG_IN_SUCCESS: {
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: dummyUser,
+        loginData: action.data,
+        isLoading: false,
+      };
+    }
+    case LOG_OUT_REQUEST: {
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: null,
+      };
+    }
+    case SIGN_UP_REQUEST: {
+      return {
+        ...state,
+        signUpData: action.data,
+      };
+    }
+    default: {
+      return {
+        ...state,
+      };
+    }
+  }
 };
 
 export default reducer;

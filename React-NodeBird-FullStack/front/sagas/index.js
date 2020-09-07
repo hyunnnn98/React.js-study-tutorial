@@ -8,8 +8,8 @@ import post from './post';
  * 하위 데이터 관리자 (자식)
  */
 export default function* rootSaga() {
-    yield all([
-        call(user),
-        call(post),
-    ])
+  yield all([
+    call(user),
+    call(post),
+  ]);
 }
