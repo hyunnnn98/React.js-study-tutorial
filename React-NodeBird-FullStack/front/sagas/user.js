@@ -1,5 +1,5 @@
 import {
-  all, call, fork, put, takeEvery, takeLatest,
+  all, call, fork, put, takeEvery, takeLatest, delay,
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
@@ -48,7 +48,8 @@ function loginAPI() {
 
 function* login() {
   try {
-    yield call(loginAPI);
+    // yield call(loginAPI);
+    yield delay(2000);
     yield put({ /* put 은 dispatch 와 동일하다. */
       type: LOG_IN_SUCCESS,
     });

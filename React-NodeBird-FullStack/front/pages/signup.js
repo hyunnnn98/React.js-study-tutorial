@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { signUpAction } from '../recuders/user';
+import { SIGN_UP_REQUEST } from '../recuders/user';
 
 const TextInput = () => <div>aa</div>;
 
@@ -46,11 +46,12 @@ const Signup = () => {
       return setTermError(true);
     }
     // redux-hook
-    dispatch(signUpAction({
-      id,
-      password,
-      nick,
-    }));
+    return dispatch({
+      type: SIGN_UP_REQUEST,
+      data: {
+        id, password, nick,
+      },
+    });
   }, [password, passwordCheck, term]);
 
   const onChangePasswordCheck = useCallback((e) => {

@@ -64,28 +64,26 @@ export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 
-// export const INCREMENT_NUMBER = "INCREMENT_NUMBER"; // 동기 요청
-
 /*
     Action
     실제 액션 ( 액션의 이름 + 넣어줄 데이터 )
 */
-export const loginAction = {
-  type: LOG_IN_REQUEST,
-};
+// export const loginRequestAction = {
+//   type: LOG_IN_REQUEST,
+// };
 
-export const logoutAction = {
-  type: LOG_OUT_REQUEST,
-};
+// export const logoutRequestAction = {
+//   type: LOG_OUT_REQUEST,
+// };
 
-export const signUpAction = (data) => ({
-  type: SIGN_UP_REQUEST,
-  data,
-});
+// export const signUpRequestAction = (data) => ({
+//   type: SIGN_UP_REQUEST,
+//   data,
+// });
 
-export const signUpSuccess = {
-  type: SIGN_UP_SUCCESS,
-};
+// export const signUpSuccess = {
+//   type: SIGN_UP_SUCCESS,
+// };
 
 /*
     Reducer
@@ -101,13 +99,14 @@ const reducer = (state = initialState, action) => {
     case LOG_IN_REQUEST: {
       return {
         ...state,
-        loginData: action.data,
-        isloading: true,
+        isLoggingIn: true,
+        logInErrorReason: '',
       };
     }
     case LOG_IN_SUCCESS: {
       return {
         ...state,
+        isLoggingIn: false,
         isLoggedIn: true,
         me: dummyUser,
         loginData: action.data,
@@ -117,7 +116,9 @@ const reducer = (state = initialState, action) => {
     case LOG_IN_FAILURE: {
       return {
         ...state,
+        isLoggingIn: false,
         isLoggedIn: false,
+        logInErrorReason: action.error,
         me: null,
       };
     }
