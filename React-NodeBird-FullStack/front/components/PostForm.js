@@ -1,16 +1,39 @@
-import React from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { ADD_POST_REQUEST } from '../recuders/post';
 
 const PostForm = () => {
-  const { imagePaths } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
+  const [text, setText] = useState('');
+  const { imagePaths, isAddingPost, postAdded } = useSelector((state) => state.post);
+
+  useEffect(() => {
+    setText('');
+  }, [postAdded === true]);
+
+  const onSubmitForm = useCallback((e) => {
+    // SPA 관련 FORM TAG에는 preventDefault가 필수적이다.
+    e.preventDefault();
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: {
+        text,
+      },
+    });
+  }, []);
+
+  const onChangeText = useCallback((e) => {
+    setText(e.target.value);
+  }, []);
+
   return (
-    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data">
-      <Input.TextArea maxLength="140" placeholder="어떤 신기한 일이 있었나요?" />
+    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onSubmit={onSubmitForm}>
+      <Input.TextArea maxLength="140" placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText} />
       <div>
         <Input type="file" multiple hidden />
         <Button>이미지 업로드</Button>
-        <Button type="primary" stype={{ float: 'right' }} htmlType="submit">짹짹</Button>
+        <Button type="primary" stype={{ float: 'right' }} htmlType="submit" loading={isAddingPost}>짹짹</Button>
       </div>
       <div>
         {imagePaths.map((v) => (

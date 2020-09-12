@@ -8,8 +8,17 @@ export const initialState = {
     img: 'https://web-source-animalcro-project.s3.ap-northeast-2.amazonaws.com/source/loading.png',
   }], // 화면에 보일 포스트들
   imagePaths: [], // 미리보기 이미지 경로
-  addPostError: false, // 포스트 업로드 실패 사유
+  addPostErrorReason: false, // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
+  postAdded: false, // 포스트 업로드 성공
+};
+
+const dummyPost = {
+  User: {
+    id: 1,
+    nickname: '핫식스',
+  },
+  content: '나는 더미 컨텐츠 입니다.',
 };
 
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
@@ -62,12 +71,30 @@ export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
 export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
 export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
 
-const reducer = (state = initialState, { type, payload }) => {
-  switch (type) {
+export default (state = initialState, action) => {
+  switch (action.type) {
     case ADD_POST_REQUEST: {
       return {
         ...state,
-        mainPosts: [...payload, ...state.mainPosts],
+        isAddingPost: true,
+        addPostErrorReason: '',
+        postAdded: false,
+      };
+    }
+    case ADD_POST_SUCCESS: {
+      return {
+        ...state,
+        isAddingPost: false,
+        mainPosts: [dummyPost, ...state.mainPosts],
+        postAdded: true,
+      };
+    }
+    case ADD_POST_FAILURE: {
+      return {
+        ...state,
+        isAddingPost: false,
+        addPostErrorReason: action.error,
+        postAdded: false,
       };
     }
     default: {
@@ -77,5 +104,3 @@ const reducer = (state = initialState, { type, payload }) => {
     }
   }
 };
-
-export default reducer;
